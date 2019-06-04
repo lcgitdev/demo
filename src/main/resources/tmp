@@ -1,0 +1,124 @@
+ $('#form-video').validate({
+        submit: {
+            settings: {
+                inputContainer: '.field'
+            },
+            callback: {
+                onBeforeSubmit: function (node) {
+                    var file = $("#thisfileVideo").val();
+                    if (null == file || '' == file) {
+                        errorAlert("必须选择视频哦");
+                        return false;
+                    }
+
+                    var fileTypeStr = getFileType(file);
+
+                    if (fileTypeStr != "mp4" && fileTypeStr != "3gp" && fileTypeStr != "rmvb" && fileTypeStr != "wmv" && fileTypeStr != "ram") {
+                        errorAlert("只能选择视频文件哦");
+                        return false;
+                    }
+                },
+                onSubmit: function (node) {
+                    $("#form-video").ajaxSubmit(function (data) {
+                        if (data.status) {
+                            successAlert(data.msg);
+
+                            $("#form-video")[0].reset();
+                            //关闭模态窗口
+                            $("#addVideoModal").modal("hide");
+                            //刷新
+                            // showStoryCats();
+                        } else {
+                            errorAlert(data.msg);
+                        }
+
+                    })
+                },
+            }
+        },
+        debug: true
+    });
+
+
+
+ //videosDiv
+    function showVideos() {
+        $('#videosDiv ul').html("");
+
+        $.ajax({
+            url: "/video/list",
+            type: "get",
+            async: true,
+            success: function (data) {
+                if (null != data & data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var html = "";
+                        html += "<li>";
+                        var imgPath = data[i].videoPath;
+                        html += data[i].title;
+                        html += "/<li>";
+                        $('#videosDiv ul').append(html);
+                    }
+                }
+
+            }
+        });
+    }
+
+
+<div class="modal fade bs-example-modal-lg" style="margin-left: 4%;margin-top: 4%;" id="addVideoModal" tabindex="-1"
+     role="dialog"
+     aria-labelledby="addVideoModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button style="margin-right: -68%;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 style="margin-right: 60%;" class="modal-title" id="addVideoModalLabel">
+                    传视频
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-video" name="form-video" th:action="@{/video/add}" th:method="put"
+                      class="validation-form-container" enctype="multipart/form-data">
+
+                    <div class="field">
+                        <label for="title">视频名称</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <input id="title" name="title" type="text"
+                                   data-validation="[L>=1, L<=10]"
+                                   data-validation-message="$ 长度小于10位">
+                            <div class="ui corner label">
+                                <i class="asterisk icon">*</i>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 真正的文件上传表单 -->
+                    <div class="field">
+                        <input name="realFile" type="file" id="thisfileVideo" style="display: none"/>
+
+                        <label for="signup_v1-password">视频</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <div class="input-append">
+                                <!-- 用于展示上传文件名的表单 -->
+                                <input id="shownameVideo" class="input-large" type="text"
+                                       style="    height: 37px;width: 80%;">
+                                <!-- 点击触发按钮 -->
+                                <a class="btn choseFile" onclick="makeThisfileVideo()" id="browseVideo">选择视频</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="submit" class="ui blue submit button" value="保存">
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>

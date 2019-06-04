@@ -1,0 +1,2113 @@
+<!doctype html>
+
+
+<html id="html" class="no-js myScrollbar" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Good memories of lc and fd</title>
+
+
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{css/bootstrap-theme.min.css}">
+    <link rel="stylesheet" th:href="@{css/flexslider.css}">
+    <link rel="stylesheet" th:href="@{css/jquery.fancybox.css}">
+    <link rel="stylesheet" th:href="@{css/main.css}">
+    <link rel="stylesheet" th:href="@{css/responsive.css}">
+    <link rel="stylesheet" th:href="@{css/font-icon.css}">
+    <link rel="stylesheet" th:href="@{css/animate.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style4.css}"/>
+    <link rel="stylesheet" th:href="@{css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{css/jquery.validation.css}">
+    <link rel="stylesheet" th:href="@{css/sweetalert2.min.css}">
+
+    <link rel="stylesheet" th:href="@{css/photo/chromagallery.min.css}">
+    <link rel="stylesheet" th:href="@{css/upload/upload.css}">
+
+    <link rel="stylesheet" th:href="@{css/bbs/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{css/bbs/sinaFaceAndEffec.css}"/>
+
+    <link rel="stylesheet" th:href="@{css/date/laydate.css}"/>
+    <link rel="stylesheet" th:href="@{css/reset.css}"/>
+    <link rel="stylesheet" th:href="@{css/story/index.css}"/>
+
+    <link rel="stylesheet" th:href="@{css/lunbo/css.css}"/>
+    <link rel="stylesheet" th:href="@{css/photo/style2.css}"/>
+
+    <link rel="stylesheet" th:href="@{css/anime/demo.css}"/>
+    <link rel="stylesheet" th:href="@{css/anime/normalize.css}"/>
+    <link rel="stylesheet" th:href="@{css/anime/reset.css}"/>
+
+
+    <style>
+        html, body {
+            font-family: Tahoma;
+            background: #fff;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        html{
+            overflow-y: scroll;
+        }
+
+        .div1 {
+            font-size: 15px;
+            font-family: Tahoma;
+            color: #00aeda;
+            width: 100%;
+            height: 15%;
+            background-color: white;
+            text-align: center;
+        }
+
+        .photo_content {
+            width: 100%;
+            height: 100%;
+            margin: 10px auto;
+        }
+
+        @media screen and (min-width: 980px) /* Desktop */ {
+            .photo_content {
+                width: 70%;
+            }
+        }
+
+        .photo_mygallery {
+            margin: 25px 0;
+        }
+
+        .zUIpanelScrollBox, .zUIpanelScrollBar {
+            width: 10px;
+            top: 4px;
+            right: 2px;
+            border-radius: 5px;
+        }
+
+        .zUIpanelScrollBox {
+            background: black;
+            opacity: 0.1;
+            filter: alpha(opacity=10);
+        }
+
+        .zUIpanelScrollBar {
+            background: mediumseagreen;
+            opacity: 0.8;
+            filter: alpha(opacity=80);
+        }
+
+        .liHover li a{
+            color: #007bff !important;
+        }
+
+        .liHover li a:hover{
+            font-size: 20px;
+            color: orange !important;;
+            transition:all 1s;
+        }
+
+
+
+        .modal2 {
+            display: none;
+
+        }
+
+        .modal-bg2 {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1001;
+            -moz-opacity: 0.3;
+            opacity: .30;
+            filter: alpha(opacity=30);
+
+        }
+
+        .modal-show2 {
+            display: none;
+            position: absolute;
+            top: 25%;
+            left: 32%;
+            width: 33%;
+            height: 40%;
+            padding: 8px;
+            background-color: white;
+            z-index: 1002;
+            overflow: auto;
+            background-image: url('../images/load.gif');
+            background-position: center center ;
+            background-repeat: no-repeat ;
+            background-size: 100% 100% ;
+        }
+
+
+
+    </style>
+</head>
+
+
+
+<body id="body" th:inline="text">
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade bs-example-modal-md" id="addAlbumsModal" tabindex="-1" role="dialog"
+     aria-labelledby="addAlbumsModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button style="margin-right: -80%;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 style="margin-right: 60%;" class="modal-title" id="addAlbumsModalLabel">
+                    添加相册
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-signup_v1" name="form-signup_v1" th:action="@{/photo/addPhotoAlbum}" th:method="put"
+                      class="validation-form-container">
+
+                    <div class="field">
+                        <label for="albumName">相册名称</label>
+                        <div class="ui left labeled input">
+                            <input id="name" name="name" type="text"
+                                   data-validation="[L>=1, L<=10]"
+                                   data-validation-message="$ 长度小于10位">
+                            <div class="ui corner label">
+                                <i class="asterisk icon">*</i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 真正的文件上传表单 -->
+                    <div class="field">
+                        <input name="realFile" type="file" id="thisfileAlbum" style="display: none" />
+
+                        <label for="signup_v1-password">图片</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <div class="input-append">
+                                <!-- 用于展示上传文件名的表单 -->
+                                <input id="shownameAlbum" class="input-large" type="text" style="height: 37px;width: 70%;">
+                                <!-- 点击触发按钮 -->
+                                <a class="btn" onclick="makeThisfileAlbum()" id="browseAlbum">选择图片</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--    <div class="field">
+                            <label for="signup_v1-password">albumRemark</label>
+                            <div class="ui left labeled input">
+                            <textarea id="remark" name="remark" type="text"
+                                      data-validation="[L>=1, L<=200]"
+                                      data-validation-message="$ 长度小于200"></textarea>
+                                <div class="ui corner label">
+                                    <i class="asterisk icon">*</i>
+                                </div>
+                            </div>
+                        </div>
+    -->
+
+                    <input type="submit" class="ui blue submit button" value="保存">
+
+                </form>
+
+            </div>
+            <!--<div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+              </button>
+              <button type="button" class="btn btn-primary">
+                提交更改
+              </button>
+            </div>-->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<div class="modal myScrollbar" style="width:100%;background-color:rgba(255,255,255,0.5);"  id="photosModal"  tabindex="-1" role="dialog"
+     aria-labelledby="photosModalLabel"
+     aria-hidden="true">
+
+
+</div>
+
+<div class="modal fade bs-example-modal-md" id="addPhotosModal" tabindex="-1" role="dialog"
+     aria-labelledby="addAlbumsModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button onclick="closeAddPhoto();" style="margin-right: -80%;" type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 style="margin-right: 60%;" class="modal-title" id="addAlbumsModalLabel">
+                    相册管理
+                </h4>
+            </div>
+            <div class="modal-body" id="zwb_upload_div">
+                <a id="zwb_upload" style="height:103% !important">
+                    <input type="file" class="add" multiple>点击上传图片
+                </a>
+                <input type="hidden" name="filePath" id="callbackPath2">
+
+            </div>
+            <!--  <div class="modal-body" id="albumDelDiv">
+
+              </div>-->
+            <!--<div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+              </button>
+              <button type="button" class="btn btn-primary">
+                提交更改
+              </button>
+            </div>-->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="pic modal" id="storyModal" style="height:650px;overflow:hidden;margin-left: 1%;" tabindex="-1"
+     role="dialog" aria-labelledby="storyModalLabel"
+     aria-hidden="true">
+    <ul >
+
+
+    </ul>
+</div>
+
+<div class="modal fade bs-example-modal-lg" style="margin-left: 4%;margin-top: 4%;" id="addStoryCatModal" tabindex="-1" role="dialog"
+     aria-labelledby="addStoryCatModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button style="margin-right: -82%;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 style="margin-right: 60%;" class="modal-title" >
+                    创建一个文学类型
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-storyCat" name="form-story" th:action="@{/story/addStoryCat}" th:method="put"
+                      class="validation-form-container" enctype="multipart/form-data" >
+
+                    <div class="field">
+                        <label for="title">文学类型</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <input id="title" name="title" type="text"
+                                   data-validation="[L>=1, L<=10]"
+                                   data-validation-message="$ 长度小于10位">
+                            <div class="ui corner label">
+                                <i class="asterisk icon">*</i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="title">文学描述</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <input id="remark" name="remark" type="text"
+                                   data-validation="[L>=1, L<=20]"
+                                   data-validation-message="$ 长度小于20位">
+                            <div class="ui corner label">
+                                <i class="asterisk icon">*</i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 真正的文件上传表单 -->
+                    <div class="field">
+                        <input name="realFile" type="file" id="thisfileCat" style="display: none" />
+
+                        <label for="signup_v1-password">图片</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <div class="input-append">
+                                <!-- 用于展示上传文件名的表单 -->
+                                <input id="shownameCat" class="input-large" type="text" style="    height: 37px;width: 80%;">
+                                <!-- 点击触发按钮 -->
+                                <a class="btn" onclick="makeThisfileCat()" id="browseCat">选择图片</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="submit" class="ui blue submit button" value="保存">
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" style="margin-left: 4%;margin-top: 4%;" id="addStoryModal" tabindex="-1" role="dialog"
+     aria-labelledby="addStoryModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button style="margin-right: -68%;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 style="margin-right: 60%;" class="modal-title" id="addAlbumsModalLabel">
+                    写文字
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-story" name="form-story" th:action="@{/story/addStory}" th:method="put"
+                      class="validation-form-container" enctype="multipart/form-data" >
+
+                    <div class="field">
+                        <label for="title">标题</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <input id="title" name="title" type="text"
+                                   data-validation="[L>=1, L<=10]"
+                                   data-validation-message="$ 长度小于10位">
+                            <div class="ui corner label">
+                                <i class="asterisk icon">*</i>
+                            </div>
+                        </div>
+                    </div>
+
+                      <div class="field">
+                            <label for="signup_v1-password">内容</label>
+                            <div class="ui left labeled input">
+                            <textarea id="content" name="content" type="text" style="height: 150px;"
+                                      data-validation="[L>=1, L<5000=]"
+                                      data-validation-message="$ 长度小于5000"></textarea>
+                                <div class="ui corner label">
+                                    <i class="asterisk icon">*</i>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- 真正的文件上传表单 -->
+                    <div class="field">
+                        <input name="realFile" type="file" id="thisfile" style="display: none" />
+
+                        <label for="signup_v1-password">背景图片</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <div class="input-append">
+                                <!-- 用于展示上传文件名的表单 -->
+                                <input id="showname" class="input-large" type="text" style="    height: 37px;width: 80%;">
+                                <!-- 点击触发按钮 -->
+                                <a class="btn" onclick="makeThisfile()" id="browse">选择图片</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="submit" class="ui blue submit button" value="保存">
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" style="margin-left: 4%;margin-top: 4%;" id="addVideoModal" tabindex="-1" role="dialog"
+     aria-labelledby="addVideoModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button style="margin-right: -68%;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 style="margin-right: 60%;" class="modal-title" id="addVideoModalLabel">
+                    上传视频
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-video" name="form-video" th:action="@{/video/add}" th:method="put"
+                      class="validation-form-container" enctype="multipart/form-data" >
+
+                    <div class="field">
+                        <label for="title">视频名称</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <input id="title" name="title" type="text"
+                                   data-validation="[L>=1, L<=10]"
+                                   data-validation-message="$ 长度小于10位">
+                            <div class="ui corner label">
+                                <i class="asterisk icon">*</i>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 真正的文件上传表单 -->
+                    <div class="field">
+                        <input name="realFile" type="file" id="thisfileVideo" style="display: none" />
+
+                        <label for="signup_v1-password">视频</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <div class="input-append">
+                                <!-- 用于展示上传文件名的表单 -->
+                                <input id="shownameVideo" class="input-large" type="text" style="    height: 37px;width: 80%;">
+                                <!-- 点击触发按钮 -->
+                                <a class="btn choseFile" onclick="makeThisfileVideo()" id="browseVideo">选择视频</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="submit" class="ui blue submit button" value="保存">
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" style="margin-left: 4%;margin-bottom: 2%;" id="updUserModal" tabindex="-1" role="dialog"
+     aria-labelledby="updUserModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button style="margin-right: -100%;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <img  style="border-radius: 50%;width: 40px;height: 40px;margin-right: 2%" th:src='${user.imgPath}' />
+
+                <h4 style="margin-right: 80%;" class="modal-title" id="updUserModalLabel">
+                    您的信息
+                </h4>
+
+            </div>
+            <div class="modal-body">
+                <form id="form-user" name="form-user" th:action="@{/user/upd}" th:method="put"
+                      class="validation-form-container" enctype="multipart/form-data" >
+
+                    <div class="field">
+                        <label for="title">账号</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <input id="userName" name="userName" type="text" th:value="${user.userName}" th:disabled="true"
+                                   data-validation="[L>=1, L<=10]"
+                                   data-validation-message="$ 长度小于10位">
+                            <div class="ui corner label">
+                                <i class="asterisk icon">*</i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="title">密码</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <input id="passWord" name="passWord" type="password" th:value="${user.passWord}"
+                                   data-validation="[L>=1, L<=10]"
+                                   data-validation-message="$ 长度小于10位">
+                            <div class="ui corner label">
+                                <i class="asterisk icon">*</i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="title">昵称</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <input id="realName" name="realName" type="text" th:value="${user.realName}"
+                                   data-validation="[L>=1, L<=10]"
+                                   data-validation-message="$ 长度小于10位">
+                            <div class="ui corner label">
+                                <i class="asterisk icon">*</i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="title">签名</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <input id="remark" name="remark" type="text" th:value="${user.remark}"
+                                   data-validation="[L>=1, L<=200]"
+                                      data-validation-message="$ 长度小于200位"> </input>
+                            <div class="ui corner label">
+                                <i class="asterisk icon">*</i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 真正的文件上传表单 -->
+                    <div class="field">
+                        <input name="realFile" type="file" id="thisfileUser" style="display: none" />
+
+                        <label for="signup_v1-password">头像</label>
+                        <div class="ui left labeled input col-xs-4">
+                            <div class="input-append">
+                                <!-- 用于展示上传文件名的表单 -->
+                                <input id="shownameUser" class="input-large" type="text" style="height: 37px;width: 80%;">
+                                <!-- 点击触发按钮 -->
+                                <a class="btn choseFile" onclick="makeThisfileUser()" id="browseUser">选择头像</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input name="id"  id="id" type="hidden" th:value="${user.id}" style="display: none" />
+                    <input type="submit" class="ui blue submit button" value="保存">
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" style="margin-left: 4%;margin-top: 4%;" id="loadModal" tabindex="-1" role="dialog"
+     aria-labelledby="loadModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body">
+              加载中...
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="loadModal2" v-bind:style="{display:isShow}">
+    <div class="modal-bg2" id="loadModal2bg" v-bind:style="{display:isShow}" @click="modalClose"></div>
+    <div class="modal-show2" id="loadModal2show"  v-bind:style="{display:isShow}">
+
+    </div>
+</div>
+
+<!-- header section -->
+<section class="banner" role="banner">
+
+    <!--导航头-->
+    <header id="header" >
+        <div class="header-content clearfix">
+
+            <div id="userDiv">
+                <a class="logo" style="font-family: FZShuTi;color: #ba8b00" th:text="'welcome you ' + ${user.realName}"></a>
+                <span th:if="${user.isCurd eq 1}">
+                    <img title="设置您的个人信息" onclick="showUserModal();" style="border-radius: 50%;" th:src='${user.imgPath}' />
+                </span>
+
+                <img title="退出登录" onclick='loginOut();' src='../../images/loginOut.png' />
+            </div>
+
+            <nav class="navigation" role="navigation">
+                <ul class="primary-nav liHover">
+                    <li><a href="#banner">Home</a></li>
+                    <li><a href="#hero-slides">photo</a></li>
+                    <li><a href="#video">video</a></li>
+                    <li><a href="#coidea">literature</a></li>
+                    <li><a href="#bbs">bbs</a></li>
+
+                </ul>
+            </nav>
+            <a href="#" class="nav-toggle">Menu<span></span></a></div>
+    </header>
+
+    <!-- 导航下浮动字 -->
+    <div class="banner" id="banner">
+        <ul class="cb-slideshow">
+            <li><span>images 01</span>
+                <div><h3>LOVE</h3></div>
+            </li>
+            <li><span>images 02</span>
+                <div><h3>TRUST</h3></div>
+            </li>
+            <li><span>images 03</span>
+                <div><h3>UNDERSTAND</h3></div>
+            </li>
+            <li><span>images 04</span>
+                <div><h3>TOLERATE</h3></div>
+            </li>
+            <li><span>images 05</span>
+                <div><h3>GRATEFUL</h3></div>
+            </li>
+            <li><span>images 06</span>
+                <div><h3>NEVER ABANDON</h3></div>
+            </li>
+        </ul>
+        <!-- banner text -->
+    </div>
+
+</section>
+
+<!-- 第一段文字 -->
+<section id="intro" class="section intro" style="background-image: url('../images/intro.jpg')">
+    <div class="container">
+        <div  class="col-md-8 col-md-offset-2 text-center">
+            <h3 >It's the depth of feeling, not the depth of field.</h3>
+            <p  >所谓美人者，以花为貌，以鸟为声，以月为神，以柳为态，以玉为骨，以冰雪为肤，以秋水为姿，以诗词为心。</p>
+        </div>
+    </div>
+</section>
+
+<!--图片-->
+<section id="hero-slides" class="photo section" style="height: 120vh;background-image: url('../images/story/photo2.jpg')">
+    <div class="container-fluid" id="">
+        <div class="section-header" style="margin-top:1%;">
+              <span th:if="${user.isCurd eq 1}">
+                 <h2 class="wow fadeInDown animated hHover curs notOver" title="添加相册" data-toggle='modal' data-target='#addAlbumsModal'>photo</h2>
+              </span>
+
+             <span th:if="${user.isCurd eq 0}">
+                 <h2 class="wow fadeInDown animated hHover curs" >photo</h2>
+              </span>
+
+            <p class="wow fadeInDown animated " style="margin-top: 2%">留住你一面，画在我心间 </p>
+        </div>
+      <!--  <div class="row no-gutter" id="albumsDiv 2" style="margin: 10%;margin-top: 5%">
+
+        </div> -->
+
+            <div id="slides-cont" style="margin-top: 5%;">
+                <div class="button" id="next" style="display: none;"></div>
+                <div class="button" id="prev" style="display: none;"></div>
+                <div id="slides" style="width: auto;overflow-x: hidden;overflow-y: hidden;">
+
+                </div>
+                <div id="next-catch"></div>
+                <div id="prev-catch"></div>
+            </div>
+
+
+    </div>
+</section>
+
+<section id="intro2" class="section intro" style="background-image: url('../images/intro.jpg')">
+    <div class="container">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <h3>There is not much love in the world. A woman's blush is better than a long confession.</h3>
+            <p >斯人若彩虹，遇上方知有。</p>
+        </div>
+    </div>
+</section>
+<!--video  addVideoModal -->
+<section id="video" class="video section" style="height: 130vh;background-image: url('../images/story/video1.jpg')">
+    <div class="container-fluid" >
+        <div class="section-header">
+              <span th:if="${user.isCurd eq 1}">
+                 <h2 class="wow fadeInDown animated hHover curs notOver" title="添加视频" data-toggle='modal' data-target='#addVideoModal'>video</h2>
+              </span>
+            <span th:if="${user.isCurd eq 0}">
+                 <h2 class="wow fadeInDown animated hHover curs ">video</h2>
+              </span>
+
+            <p class="wow fadeInDown animated " style="margin-top: 2%">心动的回忆，只因有你</p>
+        </div>
+    </div>
+
+    <div style="height:80%;">
+        <video id="myVideoPlayer" style="margin-left:2%;margin-top:5%;height:95%;width:75%;object-fit: fill;border: 5px solid;" controls="true"
+               src=""
+        ></video>
+
+        <div class="myVideos myScrollbar" id="videosDiv">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="intro3" class="section intro" style="background-image: url('../images/intro.jpg')">
+    <div class="container">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <h3 >One tree shakes another tree, one cloud pushes another cloud, one soul awakens another soul</h3>
+            <p >它不像枪炮直接要命也不像刀剑触肤见血它杀敌于无形毙敌于千里
+                它不如诗歌娓娓动听也不如语言抑扬顿挫却似一幅画卷美不胜收又似一条江河浩浩荡荡
+                它不是风景赏心悦目也不是流水浪花翩翩却可以汹涌澎湃气吞山河还可以包罗万丈留传千古
+                它没有少女的美貌也无帅哥的多情却将美表现得令人销魂将情抒发到柔肠百断
+                它不会呐喊也不低吟却可以让天下人知邪风者
+            </p>
+        </div>
+    </div>
+</section>
+<!--story-->
+<section class="page-wrapper" id="coidea" style="height: 130vh;">
+
+    <div class="container-fluid">
+        <div class="section-header" style="margin-top:3%;">
+               <span th:if="${user.isCurd eq 1}">
+                  <h2 class="wow fadeInDown animated hHover curs notOver" title="添加文学类别" data-toggle='modal' data-target='#addStoryCatModal'>literature</h2>
+               </span>
+            <span th:if="${user.isCurd eq 0}">
+                  <h2 class="wow fadeInDown animated hHover curs">literature</h2>
+               </span>
+            <p class="wow fadeInDown animated">嗯...我喜欢在文字的海洋里游泳... 你呢？</p>
+        </div>
+
+        <div id="storyCatDiv" class="slider" style="height:82vh;margin-top:8%;">
+            <ul class="slider-list">
+            </ul>
+
+            <div class="slider__nav-bar" id="storyCatDivChild1">
+            </div>
+
+            <div class="slider__controls">
+                <a class="slider__arrow slider__arrow_prev"></a>
+                <a class="slider__arrow slider__arrow_next"></a>
+            </div>
+
+        </div>
+
+</section>
+
+
+<section id="intro4" class="section intro" style="background-image: url('../images/intro.jpg')">
+    <div class="container">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <h3 >Every man has his heart trouble</h3>
+            <p >种一棵树，最好的时间是十年前，其次是现在。</p>
+        </div>
+    </div>
+</section>
+<!--bbs-->
+<section id="bbs" class="bbs section " style="height: 130vh;background-image: url('../images/story/bbs3.jpg')">
+    <div class="container-fluid" style="margin: 3%;width: 90%;height: 130vh">
+        <div class="section-header">
+            <h2 class="wow fadeInDown animated hHover curs" data-toggle='modal' data-target='' >bbs</h2>
+            <p class="wow fadeInDown animated ">写信告诉我，今夜你想要梦什么...</p>
+        </div>
+
+        <div id="content">
+            <div class="wrap">
+                <div class="comment">
+                    <!--<div class="">
+                        <img src="images/bbs/1.jpg" style="border-radius: 50%;" />
+                    </div>-->
+
+                    <div class="">
+
+                        <div class="cont-box">
+                            <textarea style="background: rgba(255,255,255,0);" class="text" id="bbsCont" placeholder="请输入内容..."></textarea>
+                        </div>
+                        <div class="tools-box">
+                            <div class="operator-box-btn">
+                                <span class="face-icon">☺</span>
+                                <!--&lt;!&ndash;<span class="img-icon">▧</span>&ndash;&gt;-->
+                            </div>
+                            <div class="submit-btn" style="margin-top: 10px;"><input class="hButton" type="button" onClick="out()" value="提交留言"/></div>
+                        </div>
+
+                        <div style="margin-top: 10px;">
+                            留言查询：<input class="laydate-icon" id="bbsDate" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div id="info-show" class="myScrollbar" style="width: 100%;margin-top: 5%;overflow-y: auto;height: 65vh">
+            <ul></ul>
+        </div>
+
+    </div>
+</section>
+
+<!-- our service -->
+
+
+<section id="contact"  class="section" >
+    <div class="container" style="margin-bottom: -3%;margin-top: -2%">
+        <div class="section-header">
+            <h3 class="wow fadeInDown animated">This is a personal website, not for any other purpose.</h3>
+            <p class="wow fadeInDown animated">If you have any questions, please contact: 17381929500. thanks.</p>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- JS FILES -->
+<script th:src="@{js/jquery.min.js}"></script>
+<script th:src="@{js/bootstrap.min.js}"></script>
+<script th:src="@{js/jquery.flexslider-min.js}"></script>
+<script th:src="@{js/jquery.fancybox.pack.js}"></script>
+<script th:src="@{js/retina.min.js}"></script>
+<script th:src="@{js/modernizr.js}"></script>
+<script th:src="@{js/main.js}"></script>
+<script th:src="@{js/jquery.validation.min.js}"></script>
+<script th:src="@{js/jquery-form.js}"></script>
+<script type="text/javascript" th:src="@{js/jquery.contact.js}"></script>
+<script th:src="@{js/sweetalert2.min.js}"></script>
+
+<script th:src="@{js/photo/chromagallery.js}"></script>
+<script th:src="@{js/photo/chromagallery.pkgd.min.js}"></script>
+<script th:src="@{js/photo/imagesloaded.min.js}"></script>
+<script th:src="@{js/photo/masonry.min.js}"></script>
+<script th:src="@{js/photo/modernizr-chrg.min.js}"></script>
+<script th:src="@{js/upload/upload.min.js}"></script>
+<script type="text/javascript" th:src="@{js/bbs/main.js}"></script>
+<script type="text/javascript" th:src="@{js/bbs/sinaFaceAndEffec.js}"></script>
+<script type="text/javascript" th:src="@{js/date/laydate.js}"></script>
+<script type="text/javascript" th:src="@{js/zUI.js}"></script>
+
+<script type="text/javascript" th:src="@{js/lunbo/jquery.roundabout.min.js}"></script>
+<script type="text/javascript" th:src="@{js/lunbo/jquery.fancybox.pack.js}"></script>
+
+<script type="text/javascript" th:src="@{js/photo/polyfill.min.js}"></script>
+
+<script type="text/javascript" th:src="@{js/anime/anime.min.js}"></script>
+
+<script th:type="'text/javascript'" th:inline="javascript">
+
+    document.oncontextmenu = function () {
+         return false;
+     }
+
+    let hero = document.getElementById('hero-slides');
+  //  let menu = document.getElementById('menu');
+    let slides = document.getElementById('slides');
+    let next = [ 'next', 'next-catch' ].map(n => document.getElementById(n));
+    let prev = [ 'prev', 'prev-catch' ].map(n => document.getElementById(n));
+    let slideChildren = slides.children;
+    let slideCount = slides.children.length;
+    let currentlyDemoing = false;
+    let currentPage = 0;
+    let slidesPerPage = () => window.innerWidth > 1700 ? 4 : window.innerWidth > 1200 ? 3 : 2;
+    let maxPageCount = () => slideCount / slidesPerPage() - 1;
+
+
+    function goToPage(pageNumber = 0) {
+        var slides = document.getElementById('slides');
+        var slideCount = slides.children.length;
+        var maxPageCount = slideCount / slidesPerPage() - 1;
+
+        currentPage = Math.min(maxPageCount, Math.max(0, pageNumber));
+        console.log(currentPage);
+        hero.style.setProperty('--page', currentPage);
+
+    }
+
+    function sleep(time) {
+        return new Promise(res => setTimeout(res, time));
+    }
+
+    function hoverSlide(index) {
+        index in slideChildren &&
+        slideChildren[index].classList.add('hover');
+    }
+
+    function unhoverSlide(index) {
+        index in slideChildren &&
+        slideChildren[index].classList.remove('hover');
+    }
+
+    async function demo() {
+        if(currentlyDemoing) {
+            return;
+        }
+        currentlyDemoing = true;
+        if(currentPage !== 0) {
+            goToPage(0);
+            await sleep(800);
+        }
+        let slides = slidesPerPage();
+        let pageSeq_ = { 2: [ 1, 2, 1 ], 3: [ 1, 2, 1 / 3 ], 4: [ 1, 1, 0 ] };
+        let pageSeq = pageSeq_[slides] || pageSeq_[4];
+        let slideSeq_ = { 2: [ 2, 4, 3 ], 3: [ 3, 6, 2 ], 4: [ 3, 6, 2 ] };
+        let slideSeq = slideSeq_[slides] || slideSeq_[2];
+        await sleep(300);
+        goToPage(pageSeq[0]);
+        await sleep(500);
+        hoverSlide(slideSeq[0]);
+        await sleep(1200);
+        goToPage(pageSeq[1]);
+        unhoverSlide(slideSeq[0]);
+        await sleep(500);
+        hoverSlide(slideSeq[1]);
+        await sleep(1200);
+        goToPage(pageSeq[2]);
+        unhoverSlide(slideSeq[1]);
+        await sleep(300);
+        hoverSlide(slideSeq[2]);
+        await sleep(1600);
+        goToPage(0);
+        unhoverSlide(slideSeq[2]);
+        currentlyDemoing = false;
+    }
+
+    next.forEach(n => n.addEventListener('click', () => !currentlyDemoing && goToPage(currentPage + 1)));
+    prev.forEach(n => n.addEventListener('click', () => !currentlyDemoing && goToPage(currentPage - 1)));
+  //  menu.addEventListener('click', demo);
+
+   // sleep(5000).then(demo);
+
+
+    var bbsDate = {
+        elem: '#bbsDate',
+        format: 'YYYY-MM-DD',
+        //  min: laydate.now(),
+        max: '2099-06-16',
+        istime: true,
+        istoday: false,
+        choose: function (datas) {
+            getBbsData();
+        }
+    };
+
+    !function () {
+        laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
+        laydate(bbsDate);
+    }();
+
+    var userIsCurd = [[${user.isCurd}]];
+
+    $(function () {
+
+
+        initNotMove();
+        initMove();
+
+        document.onkeyup = function (e) {
+            var code = e.charCode || e.keyCode;
+            if (code == 27) {
+                $("#html").css("overflow-y","scroll");
+            }
+        }
+
+
+        var nowDate = getNowTime();
+        $("#bbsDate").val(nowDate);
+
+       // $("#info-show").panel({iWheelStep:10});
+
+        //查询bbs数据
+        getBbsData();
+        //查询相册数据
+        getAlbumList();
+        //查询所有文学类别
+        showStoryCats();
+
+        // 绑定表情
+        $('.face-icon').SinaEmotion($('#bbsCont'));
+
+        //日期发生变化 重新查询bbs数据
+        $("#bbsDate").change(function () {
+            getBbsData();
+        });
+
+
+
+        showVideos();
+
+        //file表单选中文件时,让file表单的val展示到showname这个展示框
+        $('#thisfile').change(function(){
+            $('#showname').val($(this).val())
+        })
+
+        $('#thisfileCat').change(function(){
+            $('#shownameCat').val($(this).val())
+        })
+
+        $('#thisfileAlbum').change(function(){
+            $('#shownameAlbum').val($(this).val())
+        })
+
+        $('#thisfileVideo').change(function(){
+            $('#shownameVideo').val($(this).val())
+        })
+
+        $('#thisfileUser').change(function(){
+            $('#shownameUser').val($(this).val())
+        })
+
+
+
+    });
+
+    function initNotMove(){
+        $(".notOver").click(function(){
+            $("#html").css("overflow-y","hidden");
+        });
+    }
+
+    function initMove(){
+        $(".close").click(function(){
+            $("#html").css("overflow-y","scroll");
+        });
+    }
+
+    //触发隐藏的file表单
+    function makeThisfile(){
+        $('#thisfile').click();
+    }
+
+    //触发隐藏的file表单
+    function makeThisfileCat(){
+        $('#thisfileCat').click();
+    }
+
+    //触发隐藏的file表单
+    function makeThisfileAlbum(){
+        $('#thisfileAlbum').click();
+    }
+
+    //触发隐藏的file表单
+    function makeThisfileVideo(){
+        $('#thisfileVideo').click();
+    }
+
+    //触发隐藏的file表单
+    function makeThisfileUser(){
+        $('#thisfileUser').click();
+    }
+
+
+    function showUserModal(){
+        $("#updUserModal").modal("show");
+    }
+
+    //videosDiv
+    function showVideos() {
+        $('#videosDiv ul').html("");
+
+        $.ajax({
+            url: "/video/list",
+            type: "get",
+            async: true,
+            success: function (data) {
+                if (null != data & data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var imgPath = data[i].videoPath;
+                        var html = "";
+
+                        if(i == 0){
+                            $("#myVideoPlayer").attr("src",imgPath);
+                            html += "<li id='"+data[i].id+"' class='myVideosClick' onclick='playVideo(\"" + imgPath + "\",this);'>";
+                        }else{
+                            html += "<li id='"+data[i].id+"' onclick='playVideo(\"" + imgPath + "\",this);'>";
+                        }
+
+                        html += " ♦ " + data[i].title;
+                        html += "</li>";
+                        $('#videosDiv ul').append(html);
+                    }
+                }else{
+                    var html = "<li>快去添加一个视频吧！！！</li>";
+                    $('#videosDiv ul').append(html);
+                }
+
+            }
+        });
+    }
+
+    function playVideo(path,obj){
+        $('#videosDiv ul li').removeClass("myVideosClick");
+        $(obj).addClass("myVideosClick");
+        $("#myVideoPlayer").attr("src",path);
+    }
+
+    //storyCatDiv
+    function showStoryCats() {
+        $('#storyCatDiv ul').html("");
+        $('#storyCatDivChild1').html("");
+
+        $.ajax({
+            url: "/story/listStoryCat",
+            type: "get",
+            async: true,
+            success: function (data) {
+                if (null != data & data.length > 0) {
+                    var yd = "";
+
+                    for (var i = 0; i < data.length; i++) {
+                        yd += "<a class='nav-control'></a>";
+
+                        var imgPath = data[i].imgPath;
+
+                        var catHtml = "";
+                        if(i == 0){
+                            catHtml += "<li class='slider-list__item slider-list__item_active'>";
+                        }else{
+                            catHtml += "<li class='slider-list__item '>";
+                        }
+
+                        catHtml += "<span class='back__element'>";
+                        catHtml += "<img src='"+imgPath+"' /></span><span class='title__element'><span class='title'>"+data[i].title+"</span></span><span class='more__element'>";
+                        catHtml += " <span class='content'><span class='headline'>"+data[i].title+"</span><span class='excerpt'>"+data[i].remark+"</span>";
+                        catHtml += " <span class='link'><div class='fill'></div> <a href='javascript:void(0);' class='notOver' onclick='showStorys(" + data[i].id + ");'>看文章</a></span>";
+
+                        if(userIsCurd == 1){
+                            catHtml += " <span class='link' style='background-color: green;margin-top: 2%;'>  <div class='fill2'></div> <a class='notOver' href='javascript:void(0);' onclick='showAddStoryModal(" + data[i].id + ");' >写文字</a></span>";
+                        }
+                        catHtml += "</span></li>";
+
+                        $('#storyCatDiv ul').append(catHtml);
+                    }
+
+                    $('#storyCatDivChild1').append(yd);
+
+                    initAnimal();
+                } else {
+                    var li = "<li><span  style='margin: 28%;font-size: 28px;'>快添加一个文学类别！！！</span></li>";
+                    $('#storyCatDiv ul').append(li);
+                }
+
+                initNotMove();
+            }
+        });
+
+
+    }
+
+    function showAddStoryModal(id){
+        $("#addStoryModal").modal("show");
+        var url = [[${#request.getContextPath()}]] + "/story/add/"+id;
+        $("#form-story").attr("action", url);
+    }
+
+    function showStoryCatsOld() {
+        $('#storyCatsModal ul').html("");
+
+        $.ajax({
+            url: "/story/listStoryCat",
+            type: "get",
+            async: true,
+            success: function (data) {
+                if (null != data & data.length > 0) {
+                    //<li id='2' class="storyAddClass"  onclick="showStorys(2);"><img th:src="@{images/photos/13.jpg}" alt=""><span class="text">story2</span></li>
+
+                    for (var i = 0; i < data.length; i++) {
+                        var imgPath = data[i].imgPath;
+                        var li = "<li id='"+data[i].id+"' class='storyAddClass'  onclick='showStorys(" + data[i].id + ");' >";
+                        li += "<img src='" + imgPath + "' alt='' ><span class='text'>"+data[i].title+"</span></li>";
+                        $('#storyCatsModal ul').append(li);
+                    }
+                } else {
+                    var li = "<li><span  style='margin: 28%;font-size: 28px;'>快添加一个文学类别！！！</span></li>";
+                    $('#storyCatsModal ul').append(li);
+                }
+
+                $(".storyAddClass").mousedown(function (e) {
+                    if (3 == e.which) {
+                        var id = e.currentTarget.id;
+                        $("#addStoryModal").modal("show");
+
+                        var url = [[${#request.getContextPath()}]] + "/story/add/"+id;
+                        $("#form-story").attr("action", url);
+                    }
+                });
+
+                $('.roundabout_box ul').roundabout({
+                    duration: 1000,
+                    minScale: 0.6,
+                    autoplay: true,
+                    autoplayDuration: 3000,  //旋转时间
+                    minOpacity: 0,
+                    maxOpacity: 1,
+                    reflect: true,
+                    startingChild: 3,
+                    autoplayInitialDelay: 5000,
+                    autoplayPauseOnHover: true,
+                    enableDrag: true
+                });
+
+            }
+        });
+
+
+    }
+
+
+    function showStorys(type) {
+        $.ajax({
+            url: "/story/list/" + type,
+            type: "get",
+            async: true,
+            success: function (data) {
+                if (null != data & data.length > 0) {
+                    $('#storyModal ul').html("");
+                    $("#storyModal").modal("show");
+
+                    for (var i = 0; i < data.length; i++) {
+                        var imgPath = data[i].imgPath;
+                        if(null == imgPath || '' == imgPath){
+                            imgPath = "../../images/story/a4.png";
+                        }
+                        var li = "<li id='li" + data[i].id + "' style='background-image: url(" + imgPath + ") ;'>";
+                        li += "<a href='javascript:;'> <div class='txt1' > <h3 class=''>"+data[i].title+"</h3>";
+                        if(userIsCurd == 1){
+                            li += "<img onclick='delStory(" + data[i].id + ");' title='删掉这篇文章' src='../../images/laji.png' /> ";
+                        }
+                        li += "</div><div class='txt myScrollbar'> <pre ></br>"+data[i].content+"</pre></div></a></li>";
+                        $('#storyModal ul').append(li);
+                    }
+                } else {
+                    errorAlert("没有任何文章哦");
+                    $("#html").css("overflow-y","scroll");
+                }
+
+                $(".pic ul li").hover(function () {
+                    $(this).stop(true).animate({width: "800px"}, 1000).siblings().stop(true).animate({width: "55px"}, 1000);
+
+                });
+            }
+        });
+
+
+    }
+
+
+    function delStory(id){
+        swal({
+            title: "真要杀死这篇文章吗？",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "是哒",
+            cancelButtonText: "不",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+
+                $.ajax({
+                    url: "/story/delById/" + id,
+                    type: "post",
+                    async: true,
+                    success: function (data) {
+                        if ('success' == data) {
+                            successAlert("成功杀死");
+                            $("#li" + id).remove();
+                        } else {
+                            errorAlert("没能杀死,出问题了");
+                        }
+
+                    }
+                });
+            }
+        });
+
+    }
+
+    //获取当前日期
+    function getNowTime() {
+        var myDate = new Date;
+        var year = myDate.getFullYear(); //获取当前年
+        var mon = myDate.getMonth() + 1; //获取当前月
+        mon = mon < 10 ? '0' + mon : mon;
+        var date = myDate.getDate(); //获取当前日
+        date = date < 10 ? '0' + date : date;
+        var dateStr = year + "-" + mon + "-" + date;
+        return dateStr;
+    }
+
+    //获取bbs列表
+    function getBbsData() {
+        var nowDate = $("#bbsDate").val();
+
+        $.ajax({
+            url: "/bbs/list/" + nowDate,
+            type: "get",
+            async: true,
+            success: function (data) {
+                $('#info-show ul').html("");
+                if (null != data & data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        $('#info-show ul').append(reply(data[i].imgPath,data[i].realName, data[i].bbsCont, data[i].createTime));
+                    }
+                } else {
+                    var str = "<h3 style='margin-top: 4%;;text-align: center' class='wow fadeInDown animated'>快来写一句吧！！！</h3>";
+                    $('#info-show ul').append(str);
+                }
+
+            }
+        });
+    }
+
+    // 提交bbs数据
+    function out() {
+        //   var inputText = $('.text').val();
+        //   $('#info-show ul').append(reply(AnalyticEmotion(inputText)));
+       // var bbsName = $('#bbsName').val();
+        var bbsContVal = $('#bbsCont').val();
+
+        var bbsCont = AnalyticEmotion(bbsContVal);
+
+        if ("" == bbsCont || bbsCont.length > 1000) {
+            swal({
+                title: "写上你得留言再提交吧！！！",
+                type: "warning",
+                showConfirmButton: false,
+                showCancelButton: false,
+                timer: 1000
+            });
+            return;
+        }
+
+
+        $.ajax({
+            url: "/bbs/add",
+            type: "post",
+            data: {
+                bbsCont: bbsCont
+            },
+            async: true,
+            success: function (data) {
+                $('#bbsCont').val("");
+
+                swal({
+                    title: data,
+                    type: "success",
+                    showConfirmButton: false,
+                    showCancelButton: false,
+                    timer: 1000
+                });
+
+                getBbsData();
+            }
+        });
+
+    }
+
+    var bbsHtml;
+    function reply(imgPath,bbsName, bbsCont, createTime) {
+        bbsHtml = '<li>';
+        bbsHtml += '<div class="head-face">';
+        bbsHtml += '<img src="'+imgPath+'">';
+        bbsHtml += '</div>';
+        bbsHtml += '<div class="reply-cont" >';
+        bbsHtml += '<p class="username fontsize1" style="font-family:Tahoma;font-size: 15px;font-weight:bold;color: #ba8b00">' + bbsName + '</p>';
+        bbsHtml += '<pre class="comment-body fontsize1" style="font-family:Tahoma;font-size: 15px;color: white">' + bbsCont + '</pre>';
+        bbsHtml += '<p class="comment-footer fontsize1" style="font-family:Tahoma;font-size: 15px;">' + createTime + '</p>';
+        bbsHtml += '</div>';
+        bbsHtml += '</li>';
+        return bbsHtml;
+    }
+
+    function closeAddPhoto() {
+        getAlbumList();
+
+    }
+
+    function getAlbumList22() {
+        $("#albumsDiv").html(' ');
+        //加载photoAlbum
+        $.ajax({
+            url: "/photo/getAlbumList",
+            type: "get",
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                var allAlbums = "";
+                //获取到List
+                if (null != data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        allAlbums += "<div  class='albums work' > ";
+                        if (null != data[i].path && '' != data[i].path) {
+                            allAlbums += "<div class='delClass' id='" + data[i].id + "'  onclick='showPhotos(" + data[i].id + ");' style='width: 100%;height: 85%;'><img src='" + data[i].path + "' alt=''></div>";
+                        } else {
+                            allAlbums += "<div  class='delClass' id='" + data[i].id + "' title='此相册没有图片，憋点了...' style='width: 100%;height: 85%;'><img src='images/index/noP.png' alt=''></div>";
+                        }
+                        allAlbums += "<div  onclick='addPhotos(" + data[i].id + ");' class='div1' >" + data[i].name + "</div></div>";
+                    }
+                } else {
+                    var str = "<h3 style='margin:0 auto;color: white;text-align: center' class='wow fadeInDown animated'>快来添加一个相册！！！</h3>";
+                    allAlbums += str;
+                }
+                $("#albumsDiv").append(allAlbums);
+
+
+                $(".delClass").mousedown(function (e) {
+                    if (3 == e.which) {
+                        var id = e.currentTarget.id;
+                        swal({
+                            title: "真的要杀死这个相册吗？",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "是哒",
+                            cancelButtonText: "不",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+
+                                $.ajax({
+                                    url: "/photo/deByAlbumId/" + id,
+                                    type: "post",
+                                    async: true,
+                                    success: function (data) {
+                                        if ('success' == data) {
+                                            successAlert("杀死成功");
+
+                                            getAlbumList();
+                                        } else {
+                                            errorAlert("杀死失败");
+                                        }
+
+                                    }
+                                });
+
+
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+
+    function getAlbumList() {
+        $("#slides").html(' ');
+        //加载photoAlbum
+        $.ajax({
+            url: "/photo/getAlbumList",
+            type: "get",
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                var allAlbums = "";
+                //获取到List
+                if (null != data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var imgPath = data[i].path;
+                        if(null == imgPath || '' == imgPath){
+                            imgPath = "../../images/story/a4.png";
+                        }
+
+                        allAlbums += " <div class='slide ' id='" + data[i].id + "'  style='background-color:white;background-image: url(" + imgPath + ");background-repeat: no-repeat;" +
+                            "background-size: 100% 100%;'> ";
+                      //  allAlbums += "<div class='number' onclick='showPhotos(" + data[i].id + ");'>show</div>";
+                      //  allAlbums += "<div class='body'><div class='location'>Shibuya, Japan</div> ";
+                        allAlbums += "<div class='albumName'>"+data[i].name+"</div>" +
+                            "<div class='link' >" +
+                            "<img class='notOver' onclick='showPhotos(" + data[i].id + ");' src='../../images/chakan.png' title='查看相册'/> ";
+
+                        var pcount = data[i].pcount;
+
+                        if(userIsCurd == 1){
+                            if(pcount >= 99){
+                                allAlbums += "<img src='../../images/redAdd.png' title='相册已满99张，不能再添加了'/>";
+                            }else{
+                                allAlbums += "<img class='notOver' onclick='addPhotos(" + data[i].id + ");' src='../../images/redAdd.png' title='添加照片'/>";
+                            }
+                            allAlbums += "<img onclick='delAlum(" + data[i].id + ");' src='../../images/laji.png' title='删除相册'/>";
+                        }
+
+                        allAlbums +=  "</div></div>";
+                    }
+                } else {
+                    var str = "<h3 style='color:orange !important;'  class='wow fadeInDown animated'>快来添加一个相册！！！</h3>";
+                    allAlbums += str;
+                }
+
+                $("#slides").append(allAlbums);
+
+                if(data.length > 3){
+                    $("#prev").show();
+                    $("#next").show();
+
+                }else{
+                    $("#prev").click();
+                    $("#prev").hide();
+                    $("#next").hide();
+                }
+
+                initNotMove();
+                initMove();
+
+            }
+        });
+    }
+
+    function delAlum(id){
+        swal({
+            title: "真的要杀死这个相册吗？",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "是哒",
+            cancelButtonText: "不",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+
+                $.ajax({
+                    url: "/photo/deByAlbumId/" + id,
+                    type: "post",
+                    async: true,
+                    success: function (data) {
+                        if ('success' == data) {
+                            successAlert("杀死成功");
+
+                            getAlbumList();
+                        } else {
+                            errorAlert("杀死失败");
+                        }
+
+                    }
+                });
+
+
+            }
+        });
+    }
+
+    function endWith(str, endStr) {
+        var d = str.length - endStr.length;
+        return (d >= 0 && str.lastIndexOf(endStr) == d);
+    }
+
+    function showPhotos(id) {
+        $.ajax({
+            url: "/photo/getPhotosByAlbumId/" + id,
+            type: "get",
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                var allAlbums = "<article class='jq22-container' style='background-color:rgba(255,255,255,0);'>";
+                allAlbums += "<div class='photo_content'><div id='photosDivA' class='chroma-gallery photo_mygallery' >";
+                //获取到List
+                if (null != data && data.length > 0) {
+                    //加载此相册的照片
+                    $("#photosModal").modal('show');
+                    $("#photosModal").html('');
+
+                    for (var i = 0; i < data.length; i++) {
+
+                        if (endWith(data[i].path, '.mp4') || endWith(data[i].path, '.avi') || endWith(data[i].path, '.rmvb')) {
+                            allAlbums += "<video id='" + data[i].id + "'  style='width:230px;heigth:100px;' controls='true'  src='" + data[i].path + "'  data-largesrc='" + data[i].path + "' />";
+                        } else {
+                            allAlbums += "<img id='" + data[i].id + "' src='" + data[i].path + "'  data-largesrc='" + data[i].path + "'>";
+                        }
+                    }
+                    allAlbums += "</div></div> </article>";
+                }else{
+                    errorAlert("还没有照片哦，快来添加吧！");
+                    $("#html").css("overflow-y","scroll");
+                    return;
+                }
+
+
+                $("#photosModal").append(allAlbums);
+
+                $(".photo_mygallery").chromaGallery
+                ({
+                    color: '#000',
+                    gridMargin: 15,
+                    maxColumns: 5,
+                    dof: true,
+                    screenOpacity: 0.8
+                });
+
+
+            }
+        });
+    }
+
+    function addPhotos(id) {
+        $("#addPhotosModal").modal('show');
+
+        /*var aa = "<button type='button' class='btn' onclick='delAlbum(" + id + ");'>删除</button>";
+         $("#albumDelDiv").html("");
+         $("#albumDelDiv").append(aa);*/
+
+
+        var ss = " <a id='zwb_upload' style='height:103% !important'> <input type='file' class='add' multiple>点击上传文件</a>";
+
+        $("#zwb_upload").remove();
+        $("#zwb_upload_div").append(ss);
+
+        $("#zwb_upload").bindUpload({
+            url: "/photo/upload/" + id,//上传服务器地址
+            callbackPath: "#callbackPath2",//绑定上传成功后 图片地址的保存容器的id或者class 必须为input或者textarea等可以使用$(..).val()设置之的表单元素
+            num: 20,//上传数量的限制 默认为空 无限制
+            type: "jpg|png|gif|jpeg",//上传文件类型 默认为空 无限制
+            size: 10 //上传文件大小的限制,默认为5单位默认为mb
+        });
+    }
+
+    //删除相册
+    function delAlbum(id) {
+        swal({
+            title: "确定删除吗？",
+            text: "你将无法恢复该虚拟文件！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定删除！",
+            cancelButtonText: "取消删除！",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+
+                $.ajax({
+                    url: "/photo/deByAlbumId/" + id,
+                    type: "post",
+                    async: true,
+                    success: function (data) {
+                        swal(data);
+
+                        if ('success' == data) {
+                            swal("成功", "你狠心删除了一个相册",
+                                "success");
+                        } else {
+                            swal("失败", "删除失败，请联系管理员",
+                                "error");
+                        }
+
+                    }
+                });
+            }
+        });
+
+    }
+
+    function successAlert(data){
+        swal({
+            title: data,
+            type: "success",
+            showConfirmButton: false,
+            showCancelButton: false,
+            timer: 1000
+        });
+    }
+
+    function errorAlert(data){
+        swal({
+            title: data,
+            type: "error",
+            showConfirmButton: false,
+            showCancelButton: false,
+            timer: 1000
+        });
+    }
+
+
+    function getFileType(filePath){
+        var startIndex = filePath.lastIndexOf(".");
+        if(startIndex != -1)
+            return filePath.substring(startIndex+1, filePath.length).toLowerCase();
+        else return "";
+    }
+
+    $('#form-signup_v1').validate({
+        submit: {
+            settings: {
+                inputContainer: '.field'
+            },
+            callback: {
+                onBeforeSubmit: function (node) {
+                    //   myBeforeSubmitFunction(':D', ':)', node);
+                    var file = $("#thisfileAlbum").val();
+                    if(null == file || '' == file){
+                        errorAlert("必须选择图片哦");
+                        return false;
+                    }
+
+                    var fileTypeStr = getFileType(file);
+
+                    if(fileTypeStr != "bmp" && fileTypeStr != "png" && fileTypeStr != "gif" && fileTypeStr != "jpg" && fileTypeStr!= "jpeg"){
+                        errorAlert("只能选择图片文件哦");
+                        return false;
+                    }
+                    loading();
+                },
+                onSubmit: function (node) {
+                    $("#form-signup_v1").ajaxSubmit(function (data) {
+                        notLoading();
+                        swal({
+                            title: "创建成功",
+                            type: "success",
+                            showConfirmButton: false,
+                            showCancelButton: false,
+                            timer: 1000
+                        });
+
+                        $("#form-signup_v1")[0].reset();
+                        getAlbumList();
+                        $("#html").css("overflow-y","scroll");
+                        //关闭模态窗口
+                        $("#addAlbumsModal").modal("hide");
+                    })
+                },
+            }
+        },
+        debug: true
+    });
+
+    $('#form-story').validate({
+        submit: {
+            settings: {
+                inputContainer: '.field'
+            },
+            callback: {
+                onBeforeSubmit: function (node) {
+                     var file = $("#thisfile").val();
+                     if(null == file || '' == file){
+                         errorAlert("必须选择图片哦");
+                         return false;
+                     }
+
+                     var fileTypeStr = getFileType(file);
+
+                     if(fileTypeStr != "bmp" && fileTypeStr != "png" && fileTypeStr != "gif" && fileTypeStr != "jpg" && fileTypeStr!= "jpeg"){
+                        errorAlert("只能选择图片文件哦");
+                        return false;
+                    }
+                    loading();
+                },
+                onSubmit: function (node) {
+                    $("#form-story").ajaxSubmit(function (data) {
+                        notLoading();
+                        if(data.status){
+                            successAlert(data.msg);
+
+                            $("#form-story")[0].reset();
+                            //关闭模态窗口
+                            $("#addStoryModal").modal("hide");
+                            $("#html").css("overflow-y","scroll");
+                        }else{
+                            errorAlert(data.msg);
+                        }
+
+                    })
+                },
+            }
+        },
+        debug: true
+    });
+
+
+    $('#form-storyCat').validate({
+        submit: {
+            settings: {
+                inputContainer: '.field'
+            },
+            callback: {
+                onBeforeSubmit: function (node) {
+                    var file = $("#thisfileCat").val();
+                    if(null == file || '' == file){
+                        errorAlert("必须选择图片哦");
+                        return false;
+                    }
+
+                    var fileTypeStr = getFileType(file);
+
+                    if(fileTypeStr != "bmp" && fileTypeStr != "png" && fileTypeStr != "gif" && fileTypeStr != "jpg" && fileTypeStr!= "jpeg"){
+                        errorAlert("只能选择图片文件哦");
+                        return false;
+                    }
+                    loading();
+                },
+                onSubmit: function (node) {
+                    $("#form-storyCat").ajaxSubmit(function (data) {
+                        notLoading();
+                        if(data.status){
+                            successAlert(data.msg);
+
+                            $("#form-storyCat")[0].reset();
+                            //关闭模态窗口
+                            $("#addStoryCatModal").modal("hide");
+                            //刷新
+                            showStoryCats();
+                            $("#html").css("overflow-y","scroll");
+                        }else{
+                            errorAlert(data.msg);
+                        }
+
+                    })
+                },
+            }
+        },
+        debug: true
+    });
+
+    $('#form-video').validate({
+        submit: {
+            settings: {
+                inputContainer: '.field'
+            },
+            callback: {
+                onBeforeSubmit: function (node) {
+                    var file = $("#thisfileVideo").val();
+                    if(null == file || '' == file){
+                        errorAlert("必须选择视频哦");
+                        return false;
+                    }
+
+                    var fileTypeStr = getFileType(file);
+
+                    if(fileTypeStr != "mp4" && fileTypeStr != "3gp" && fileTypeStr != "rmvb" && fileTypeStr != "wmv" && fileTypeStr!= "ram"){
+                        errorAlert("只能选择视频文件哦");
+                        return false;
+                    }
+
+                    loading();
+                },
+                onSubmit: function (node) {
+                    $("#form-video").ajaxSubmit(function (data) {
+                        notLoading();
+
+                        if(data.status){
+                            successAlert(data.msg);
+
+                            $("#form-video")[0].reset();
+                            //关闭模态窗口
+                            $("#addVideoModal").modal("hide");
+                            //刷新
+                            showVideos();
+                            $("#html").css("overflow-y","scroll");
+                        }else{
+                            errorAlert(data.msg);
+                        }
+                    })
+                },
+            }
+        },
+        debug: true
+    });
+
+    $('#form-user').validate({
+        submit: {
+            settings: {
+                inputContainer: '.field'
+            },
+            callback: {
+                onBeforeSubmit: function (node) {
+                   var file = $("#thisfileUser").val();
+                    if(null != file && '' != file){
+                        var fileTypeStr = getFileType(file);
+
+                        if(fileTypeStr != "bmp" && fileTypeStr != "png" && fileTypeStr != "gif" && fileTypeStr != "jpg" && fileTypeStr!= "jpeg"){
+                            errorAlert("只能选择图片文件哦");
+                            return false;
+                        }
+                    }
+
+                    loading();
+                },
+                onSubmit: function (node) {
+                    $("#form-user").ajaxSubmit(function (data) {
+                        notLoading();
+                        if(data.status){
+                            successAlert(data.msg);
+
+                            $("#form-user")[0].reset();
+                            //关闭模态窗口
+                            $("#updUserModal").modal("hide");
+                            $("#html").css("overflow-y","scroll");
+                        }else{
+                            errorAlert(data.msg);
+                        }
+
+                    })
+                },
+            }
+        },
+        debug: true
+    });
+
+    function myBeforeSubmitFunction(a, b, node) {
+        $(node).append('<div class="ui active loader"></div>');
+    }
+
+    function initAnimal(){
+        class Slider {
+            constructor(props) {
+                this.rootElement = props.element;
+                this.slides = Array.from(
+                    this.rootElement.querySelectorAll(".slider-list__item")
+                );
+                this.slidesLength = this.slides.length;
+                this.current = 0;
+                this.isAnimating = false;
+                this.direction = 1; // -1
+                this.baseAnimeSettings = {
+                    rotation: 45,
+                    duration: 750,
+                    easing: 'easeInOutCirc'
+                };
+                this.baseAnimeSettingsBack = {
+                    rotation: 45,
+                    duration: 1850,
+                    elasticity: function(el, i, l) {
+                        return (200 + i * 200);
+                    }
+                };
+                this.baseAnimeSettingsFront = {
+                    rotation: 45,
+                    duration: 2250,
+                    elasticity: function(el, i, l) {
+                        return (200 + i * 200);
+                    }
+                };
+                this.baseAnimeSettingsTitle = {
+                    rotation: 45,
+                    duration: 1750,
+                    elasticity: function(el, i, l) {
+                        return (200 + i * 200);
+                    }
+                };
+
+                this.navBar = this.rootElement.querySelector(".slider__nav-bar");
+                this.thumbs = Array.from(this.rootElement.querySelectorAll(".nav-control"));
+                this.prevButton = this.rootElement.querySelector(".slider__arrow_prev");
+                this.nextButton = this.rootElement.querySelector(".slider__arrow_next");
+
+                this.slides[this.current].classList.add("slider-list__item_active");
+                this.thumbs[this.current].classList.add("nav-control_active");
+
+                this._bindEvents();
+            }
+
+            goTo(index, dir) {
+                if (this.isAnimating) return;
+                var self = this;
+                let prevSlide = this.slides[this.current];
+                let nextSlide = this.slides[index];
+
+                self.isAnimating = true;
+                self.current = index;
+                nextSlide.classList.add("slider-list__item_active");
+
+                anime(Object.assign({}, self.baseAnimeSettings, {
+                    targets: nextSlide,
+                    rotate: [90 * dir + 'deg', 0],
+                    translateX: [90 * dir + '%', 0]
+                }));
+
+                anime(Object.assign({}, self.baseAnimeSettingsBack, {
+                    targets: nextSlide.querySelectorAll('.back__element'),
+                    rotate: [90 * dir + 'deg', 0],
+                    translateX: [90 * dir + '%', 0]
+                }));
+
+                anime(Object.assign({}, self.baseAnimeSettingsFront, {
+                    targets: nextSlide.querySelectorAll('.front__element'),
+                    rotate: [90 * dir + 'deg', 0],
+                    translateX: [90 * dir + '%', 0]
+                }));
+
+                anime(Object.assign({}, self.baseAnimeSettingsTitle, {
+                    targets: nextSlide.querySelectorAll('.title__element'),
+                    rotate: [90 * dir + 'deg', 0],
+                    translateX: [90 * dir + '%', 0]
+                }));
+
+                anime(Object.assign({}, self.baseAnimeSettings, {
+                    targets: prevSlide,
+                    rotate: [0, -90 * dir + 'deg'],
+                    translateX: [0, -100 * dir + '%'],
+                    complete: function(anim) {
+                        self.isAnimating = false;
+                        prevSlide.classList.remove("slider-list__item_active");
+                        self.thumbs.forEach((item, index) => {
+                            var action = index === self.current ? "add" : "remove";
+                        item.classList[action]("nav-control_active");
+                    });
+                    }
+                }))
+
+                anime(Object.assign({}, self.baseAnimeSettingsBack, {
+                    targets: prevSlide.querySelectorAll('.back__element'),
+                    rotate: [0, -90 * dir + 'deg'],
+                    translateX: [0, -100 * dir + '%']
+                }));
+
+                anime(Object.assign({}, self.baseAnimeSettingsFront, {
+                    targets: prevSlide.querySelectorAll('.front__element'),
+                    rotate: [0, -90 * dir + 'deg'],
+                    translateX: [0, -100 * dir + '%']
+                }));
+
+                anime(Object.assign({}, self.baseAnimeSettingsTitle, {
+                    targets: prevSlide.querySelectorAll('.title__element'),
+                    rotate: [0, -90 * dir + 'deg'],
+                    translateX: [0, -100 * dir + '%']
+                }));
+
+            }
+
+            goStep(dir) {
+                let index = this.current + dir;
+                let len = this.slidesLength;
+                let currentIndex = (index + len) % len;
+                this.goTo(currentIndex, dir);
+            }
+
+            goNext() {
+                this.goStep(1);
+            }
+
+            goPrev() {
+                this.goStep(-1);
+            }
+
+            _navClickHandler(e) {
+                var self = this;
+                if (self.isAnimating) return;
+                let target = e.target.closest(".nav-control");
+                if (!target) return;
+                let index = self.thumbs.indexOf(target);
+                if (index === self.current) return;
+                let direction = index > self.current ? 1 : -1;
+                self.goTo(index, direction);
+            }
+
+            _bindEvents() {
+                var self = this;
+                ["goNext", "goPrev", "_navClickHandler"].forEach(method => {
+                    self[method] = self[method].bind(self);
+            });
+                self.nextButton.addEventListener("click", self.goNext);
+                self.prevButton.addEventListener("click", self.goPrev);
+                self.navBar.addEventListener("click", self._navClickHandler);
+            }
+        }
+
+// ===== init ======
+        let slider = new Slider({
+            element: document.querySelector(".slider")
+        });
+    }
+
+
+    function loginOut(){
+        $.ajax({
+            url: "/login/loginOut",
+            type: "get",
+            async: true,
+            success: function (data) {
+                window.location.href= [[${#request.getContextPath()}]] + "/login";
+            }
+        });
+    }
+
+   function loading() {
+       $("#loadModal2").css("display","block");
+       $("#loadModal2bg").css("display","block");
+       $("#loadModal2show").css("display","block");
+   }
+
+   function notLoading() {
+       $("#loadModal2").css("display","none");
+       $("#loadModal2bg").css("display","none");
+       $("#loadModal2show").css("display","none");
+   }
+
+
+</script>
+
+
+</body>
+</html>

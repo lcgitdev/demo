@@ -1,0 +1,199 @@
+@charset "utf-8";
+/* CSS Document */
+
+a {
+    text-decoration: none;
+}
+
+.pic {
+    overflow: hidden; /*隐藏溢出*/
+    width: 90%;
+    height: 80%;
+    margin: 0 auto;
+    padding-top: 70px;
+
+}
+
+.pic ul li {
+    float: left;
+    height: 527px;
+    width: 60px;
+}
+
+.pic ul li {
+    background-position: center center; /*图片居中  等比例*/
+    background-repeat: no-repeat; /*图片不平铺*/
+    background-size: 100% 100%;
+}
+
+
+
+.txt1 {
+    background-color: #000;
+    background: rgba(0, 0, 0, 0);
+    height: 40px;
+    width:100%;
+}
+
+.txt1 img{
+    width: 2%;
+    float: right;
+    margin-right: 5%;
+    margin-top: 1%;
+}
+
+.txt1 img:hover{
+    width: 3%;
+}
+
+
+
+.txt1 h3 {
+    float: left;
+    color: orangered;
+    font-family: Tahoma;
+    margin-left: 5%;
+}
+
+.txt {
+    background-color: #000;
+    background: rgba(0, 0, 0, .5);
+    height: 485px;
+    width: 100%;
+    overflow-y: auto;
+}
+
+
+.myScrollbar::-webkit-scrollbar{
+    width:5px;
+    background-color: #EEEEEE;
+
+}
+
+.myScrollbar::-webkit-scrollbar-thumb{
+    background-color:#9c6;
+}
+
+.txt p {
+    float: left;
+    color: #fff;
+}
+
+.txt pre {
+    color: #fff;
+    font-family: Tahoma;
+    margin-left: 5%;
+    overflow: hidden;
+    background-color: rgb(0,0,0,0);
+    border: 0px;
+}
+
+.txt .p1 {
+    font-size: 13px;
+    width: 13px;
+    padding: 25px 25px 0px 20px;
+}
+
+#albumsDiv{
+    transform-style:preserve-3d;
+    perspective:1000px;
+}
+
+.albums {
+    width: 150px;
+    height: 150px;
+    margin-right: 30px;
+    transform: rotate(30deg);
+}
+
+.albums:hover {
+    width: 175px !important;
+    height: 175px !important;
+    transition: all 0.5s;
+    transform: rotate(360deg);
+}
+
+.hHover:hover {
+    font-size: 50px;
+    color: orange;
+    font-weight: bold;
+    transition: all 1s;
+}
+
+.hButton:hover {
+    background-color: orange !important;
+    font-weight: bold;
+    transition: all 1s;
+}
+
+#browse{
+    order: 1px solid #ccc;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #2c9a8a;
+    color: #fff;
+    width: 16%;
+    margin-left: 3%;
+}
+
+#browse:hover{
+    color: orange;
+}
+
+#browseCat{
+    order: 1px solid #ccc;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #2c9a8a;
+    color: #fff;
+    width: 16%;
+    margin-left: 3%;
+}
+
+#browseCat:hover{
+    color: orange;
+}
+
+#browseVideo{
+    order: 1px solid #ccc;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #2c9a8a;
+    color: #fff;
+    width: 16%;
+    margin-left: 3%;
+}
+
+#browseVideo:hover{
+    color: orange;
+}
+
+#browseUser{
+    order: 1px solid #ccc;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #2c9a8a;
+    color: #fff;
+    width: 16%;
+    margin-left: 3%;
+}
+
+#browseUser:hover{
+    color: orange;
+}
+
+#browseAlbum{
+    order: 1px solid #ccc;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #2c9a8a;
+    color: #fff;
+    width: 20%;
+    margin-left: 3%;
+}
+
+#browseAlbum:hover{
+    color: orange;
+}
+
+pre {white-space: pre-wrap;word-wrap: break-word;}
