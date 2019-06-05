@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * Created by luocheng on 2019/5/10.
  */
 /**
- * 设置欢迎页面
+ * 设置欢迎页面 AAAA
  **/
 @Configuration
 public class DefaultView extends WebMvcConfigurerAdapter {
